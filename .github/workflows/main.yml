@@ -16,12 +16,12 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all commit history
       
-      # - name: Get the committed file paths
-      #   id: get_paths
-      #   run: |
-      #     # Get the file paths and convert newlines to spaces
-      #     FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tr '\n' ' ')
-      #     echo "files=${FILES}" >> $GITHUB_ENV
+      - name: Get the committed file paths
+        id: get_paths
+        run: |
+          # Get the file paths and convert newlines to spaces
+          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tr '\n' ' ')
+          echo "files=${FILES}" >> $GITHUB_ENV
 
       - name: Process Path One
         if: contains(env.files, 'path/one/')
