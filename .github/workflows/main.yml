@@ -1,0 +1,72 @@
+name: Multi-Path Workflow
+
+on:
+  push:
+    paths:
+      - 'path/one/**'
+      - 'path/two/**'
+      - 'path/three/**'
+
+jobs:
+  process-paths:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Get the committed file paths
+        id: get_paths
+        run: |
+          echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})" >> $GITHUB_ENV
+
+      - name: Process Path One
+        if: contains(env.files, 'path/one/')
+        run: |
+          FILE_PATH=$(echo ${{ env.files }} | grep -oE "path/one/[^ ]+")
+          DIR_NAME=$(dirname $FILE_PATH)
+          FILE_NAME=$(basename $FILE_PATH)
+
+          # Example variable extraction based on path
+          RELATED_VAR_ONE="value_based_on_${DIR_NAME}_one"
+          echo "Processing Path One"
+          echo "DIR_NAME=${DIR_NAME}"
+          echo "FILE_NAME=${FILE_NAME}"
+          echo "RELATED_VAR_ONE=${RELATED_VAR_ONE}"
+
+          # Call a dummy action here
+          echo "Running dummy action for Path One with ${RELATED_VAR_ONE}"
+
+      - name: Process Path Two
+        if: contains(env.files, 'path/two/')
+        run: |
+          FILE_PATH=$(echo ${{ env.files }} | grep -oE "path/two/[^ ]+")
+          DIR_NAME=$(dirname $FILE_PATH)
+          FILE_NAME=$(basename $FILE_PATH)
+
+          # Example variable extraction based on path
+          RELATED_VAR_TWO="value_based_on_${DIR_NAME}_two"
+          echo "Processing Path Two"
+          echo "DIR_NAME=${DIR_NAME}"
+          echo "FILE_NAME=${FILE_NAME}"
+          echo "RELATED_VAR_TWO=${RELATED_VAR_TWO}"
+
+          # Call a dummy action here
+          echo "Running dummy action for Path Two with ${RELATED_VAR_TWO}"
+
+      - name: Process Path Three
+        if: contains(env.files, 'path/three/')
+        run: |
+          FILE_PATH=$(echo ${{ env.files }} | grep -oE "path/three/[^ ]+")
+          DIR_NAME=$(dirname $FILE_PATH)
+          FILE_NAME=$(basename $FILE_PATH)
+
+          # Example variable extraction based on path
+          RELATED_VAR_THREE="value_based_on_${DIR_NAME}_three"
+          echo "Processing Path Three"
+          echo "DIR_NAME=${DIR_NAME}"
+          echo "FILE_NAME=${FILE_NAME}"
+          echo "RELATED_VAR_THREE=${RELATED_VAR_THREE}"
+
+          # Call a dummy action here
+          echo "Running dummy action for Path Three with ${RELATED_VAR_THREE}"
+
