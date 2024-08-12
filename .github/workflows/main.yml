@@ -13,7 +13,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+        with:
+          fetch-depth: 0  # Fetch all commit history
+      
       - name: Get the committed file paths
         id: get_paths
         run: |
